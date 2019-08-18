@@ -9,6 +9,7 @@ object Constants {
     const val CAT_API_BASE_URL = "https://api.thecatapi.com/v1/"
     const val SERVER_DOWN_ERROR = "Server is down"
     const val SERVER_DOWN_CODE = -1
+    const val NUMBER_OF_COLUMNS = 3
 
     fun getErrorMessage(response: ResponseBody?): String {
         val errorObj = JSONObject(response?.string())

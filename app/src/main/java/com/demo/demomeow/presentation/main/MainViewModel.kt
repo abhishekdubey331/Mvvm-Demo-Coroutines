@@ -1,5 +1,6 @@
 package com.demo.demomeow.presentation.main
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.demo.demomeow.utils.SingleLiveEvent
 import com.demo.demomeow.data.entities.Cat
@@ -12,21 +13,16 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(private val catRepository: CatRepository) : BaseViewModel() {
 
-    val showLoading = MutableLiveData<Boolean>()
-    val catsList = MutableLiveData<List<Cat>>()
+    private val catsList = MutableLiveData<List<Cat>>()
 
-    init {
-        loadCats()
+    fun catListLivaData(): LiveData<List<Cat>> {
+        return catsList
     }
 
-    private fun loadCats() {
-        showLoading.value = true
+    fun getCatList() {
         launch {
             val result = withContext(Dispatchers.IO) { catRepository.getCatsList() }
-            showLoading.value = false
-            result?.let {
-                catsList.value = it
-            }
+            catsList.value = result
         }
     }
 }

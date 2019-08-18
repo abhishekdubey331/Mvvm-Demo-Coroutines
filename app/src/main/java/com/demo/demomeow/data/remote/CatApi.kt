@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface CatApi {
 
-    @GET("images/searc")
+    @GET("images/search")
     fun getCatsAsync(@Query("limit") limit: Int)
             : Deferred<Response<List<Cat>>>
 }

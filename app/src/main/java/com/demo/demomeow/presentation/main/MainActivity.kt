@@ -5,22 +5,26 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.widget.Toast
 import com.demo.demomeow.R
 import com.demo.demomeow.presentation.detail.DetailActivity
 import com.demo.demomeow.presentation.main.adapter.CatAdapter
+import com.demo.demomeow.presentation.withNotNull
+import com.demo.demomeow.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-const val NUMBER_OF_COLUMN = 3
-
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModel()
+    private val mainViewModel: MainViewModel by viewModel()
     private lateinit var catAdapter: CatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainViewModel.loadingObserver().observe(this, Observer<Boolean> {
+            it?.withNotNull {
+                mainProgressBar.visibility = if (this) View.VISIBLE else View.GONE
+            }
+        })
         val onCatClicked: (imageUrl: String) -> Unit = { imageUrl ->
             startActivity(DetailActivity.getStartIntent(this, imageUrl))
         }
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         catsRecyclerView.apply {
             layoutManager = GridLayoutManager(
                 this@MainActivity,
-                NUMBER_OF_COLUMN
+                Constants.NUMBER_OF_COLUMNS
             )
             adapter = catAdapter
         }
@@ -36,17 +40,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel.catsList.observe(this, Observer { newCatsList ->
-            catAdapter.updateData(newCatsList!!)
-        })
-
-        viewModel.showLoading.observe(this, Observer { showLoading ->
-            showLoading?.let {
-                if (it)
-                    mainProgressBar.visibility = View.VISIBLE
-                else
-                    mainProgressBar.visibility = View.GONE
+        mainViewModel.catListLivaData().observe(this, Observer {
+            it.withNotNull {
+                catAdapter.updateData(this)
             }
         })
+        mainViewModel.getCatList()
     }
 }
