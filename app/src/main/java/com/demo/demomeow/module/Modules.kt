@@ -2,8 +2,6 @@ package com.demo.demomeow.module
 
 import com.google.gson.GsonBuilder
 import com.demo.demomeow.data.remote.CatApi
-import com.demo.demomeow.data.repositories.CatRepository
-import com.demo.demomeow.data.repositories.CatRepositoryImpl
 import com.demo.demomeow.presentation.main.MainViewModel
 import com.demo.demomeow.utils.Constants
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -17,7 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-
 val appModules = module {
     // The Retrofit service using our custom HTTP client instance as a singleton
     single {
@@ -27,8 +24,7 @@ val appModules = module {
             baseUrl = Constants.CAT_API_BASE_URL
         )
     }
-    // Tells Koin how to create an instance of CatRepository
-    factory<CatRepository> { CatRepositoryImpl(catApi = get()) }
+
     // Specific viewModel pattern to tell Koin how to build MainViewModel
     viewModel { MainViewModel(catRepository = get()) }
 }
