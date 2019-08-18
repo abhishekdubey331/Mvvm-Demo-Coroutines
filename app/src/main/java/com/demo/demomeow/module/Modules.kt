@@ -5,6 +5,7 @@ import com.demo.demomeow.data.remote.CatApi
 import com.demo.demomeow.data.repositories.CatRepository
 import com.demo.demomeow.data.repositories.CatRepositoryImpl
 import com.demo.demomeow.presentation.main.MainViewModel
+import com.demo.demomeow.utils.Constants
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import org.koin.android.viewmodel.dsl.viewModel
@@ -15,7 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val CAT_API_BASE_URL = "https://api.thecatapi.com/v1/"
+
 
 val appModules = module {
     // The Retrofit service using our custom HTTP client instance as a singleton
@@ -23,7 +24,7 @@ val appModules = module {
         createWebService<CatApi>(
             okHttpClient = createHttpClient(),
             factory = RxJava2CallAdapterFactory.create(),
-            baseUrl = CAT_API_BASE_URL
+            baseUrl = Constants.CAT_API_BASE_URL
         )
     }
     // Tells Koin how to create an instance of CatRepository
