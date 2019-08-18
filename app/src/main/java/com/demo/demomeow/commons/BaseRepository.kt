@@ -1,11 +1,11 @@
 package com.demo.demomeow.commons
 
 
+import com.demo.demomeow.utils.Constants
 import com.demo.demomeow.utils.Result
 import com.orhanobut.logger.Logger
 import org.json.JSONObject
 import retrofit2.Response
-
 
 open class BaseRepository {
 
@@ -30,11 +30,10 @@ open class BaseRepository {
             if (response.isSuccessful) {
                 Result.Success(response.body())
             } else {
-                val errorObj = JSONObject(response.errorBody()?.string())
-                Result.Error(ServerError(response.code(), errorObj.getString("message")))
+                Result.Error(ServerError(response.code(), Constants.getErrorMessage(response.errorBody())))
             }
         } catch (exception: Exception) {
-            Result.Error(ServerError(-1, "Server is down"))
+            Result.Error(ServerError(Constants.SERVER_DOWN_CODE, Constants.SERVER_DOWN_ERROR))
         }
     }
 }

@@ -7,8 +7,6 @@ import org.koin.core.context.startKoin
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 
-
-
 class DemoMeowApplication : Application() {
 
     override fun onCreate() {
