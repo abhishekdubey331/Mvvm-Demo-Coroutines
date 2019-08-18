@@ -27,7 +27,7 @@ class MainViewModel(private val catRepository: CatRepository) : BaseViewModel() 
             showLoading.value = false
             when (result) {
                 is Result.Success -> catsList.value = result.data
-                is Result.Error -> showError.value = result.exception.message
+                is Result.Error -> showError.value = result.serverError.message
             }
         }
     }

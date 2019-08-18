@@ -16,7 +16,7 @@ open class BaseRepository {
             is Result.Success ->
                 data = result.data
             is Result.Error -> {
-                Logger.d(result.exception.errorMessage)
+                Logger.d(result.serverError.errorMessage)
             }
         }
         return data
@@ -30,7 +30,7 @@ open class BaseRepository {
             Result.Success(response.body())
         } else {
             val error: ResponseBody? = response.errorBody()
-            Result.Error(ServerException(response.code(), error.toString()))
+            Result.Error(ServerError(response.code(), error.toString()))
         }
     }
 }
