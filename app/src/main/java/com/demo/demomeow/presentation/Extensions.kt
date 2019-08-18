@@ -1,9 +1,13 @@
 package com.demo.demomeow.presentation
 
+import android.content.Context
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.demo.demomeow.R
 
-// This extension allow to call a function directly on the View to load an image.
 fun ImageView.loadImage(imageUrl: String) {
     Glide.with(this)
         .load(imageUrl)
@@ -11,8 +15,12 @@ fun ImageView.loadImage(imageUrl: String) {
         .into(this)
 }
 
-val Any.TAG: String
-    get() {
-        val tag = javaClass.simpleName
-        return if (tag.length <= 23) tag else tag.substring(0, 23)
-    }
+fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) {
+    val toastRoot = View.inflate(this, R.layout.custom_toast, null)
+    val textView = toastRoot.findViewById(R.id.my_custom_toast) as TextView
+    textView.text = text
+    val toast = Toast(this)
+    toast.view = toastRoot
+    toast.duration = duration
+    toast.show()
+}

@@ -1,11 +1,16 @@
 package com.demo.demomeow.commons
 
 
+import android.os.Handler
+import com.demo.demomeow.application.DemoMeowApplication
+import com.demo.demomeow.presentation.showToast
 import com.demo.demomeow.utils.Constants
 import com.demo.demomeow.utils.Result
 import com.orhanobut.logger.Logger
 import org.json.JSONObject
 import retrofit2.Response
+import android.os.Looper
+
 
 open class BaseRepository {
 
@@ -16,7 +21,9 @@ open class BaseRepository {
             is Result.Success ->
                 data = result.data
             is Result.Error -> {
-                Logger.d(result.serverError.errorMessage)
+                Handler(Looper.getMainLooper()).post {
+                    DemoMeowApplication.getContext()?.showToast(result.serverError.errorMessage)
+                }
             }
         }
         return data
