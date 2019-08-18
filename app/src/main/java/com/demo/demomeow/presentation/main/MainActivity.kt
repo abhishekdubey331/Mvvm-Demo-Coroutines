@@ -48,9 +48,5 @@ class MainActivity : AppCompatActivity() {
                     mainProgressBar.visibility = View.GONE
             }
         })
-
-        viewModel.showError.observe(this, Observer { showError ->
-            Toast.makeText(this, showError, Toast.LENGTH_SHORT).show()
-        })
     }
 }

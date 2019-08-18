@@ -50,4 +50,5 @@ dependencies {
 
     // For Logging
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
 }

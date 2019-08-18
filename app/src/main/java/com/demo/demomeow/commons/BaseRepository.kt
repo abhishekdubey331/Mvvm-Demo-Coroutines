@@ -3,7 +3,7 @@ package com.demo.demomeow.commons
 
 import com.demo.demomeow.utils.Result
 import com.orhanobut.logger.Logger
-import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Response
 
 
@@ -25,12 +25,16 @@ open class BaseRepository {
     private suspend fun <T : Any> safeApiResult(
         call: suspend () -> Response<T>
     ): Result<T> {
-        val response = call.invoke()
-        return if (response.isSuccessful) {
-            Result.Success(response.body())
-        } else {
-            val error: ResponseBody? = response.errorBody()
-            Result.Error(ServerError(response.code(), error.toString()))
+        return try {
+            val response = call.invoke()
+            if (response.isSuccessful) {
+                Result.Success(response.body())
+            } else {
+                val errorObj = JSONObject(response.errorBody()?.string())
+                Result.Error(ServerError(response.code(), errorObj.getString("message")))
+            }
+        } catch (exception: Exception) {
+            Result.Error(ServerError(-1, "Server is down"))
         }
     }
 }
