@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(private val catRepository: CatRepository) : BaseViewModel() {
 
-    private val catsList = MutableLiveData<List<Cat>>()
+    private val catsList = SingleLiveEvent<List<Cat>>()
 
     fun catListLivaData(): LiveData<List<Cat>> {
         return catsList

@@ -38,14 +38,12 @@ class CatAdapter(private val onCatClicked: (imageUrl: String) -> Unit) :
         }
     }
 
-    // Update recyclerView's data
     fun updateData(newCatsList: List<Cat>) {
         catsList = newCatsList
     }
 
     class CatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(cat: Cat) {
-            // Load images using Glide library
             Glide.with(itemView.context)
                 .load(cat.imageUrl)
                 .centerCrop()
